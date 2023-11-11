@@ -1168,8 +1168,8 @@ GatherItems = {
 				},
 			},
 		},
-	},
-}
+	}
+	
 Gatherer_SavedSettings_AccountWide = {
 	["HideOnClick"] = 0,
 	["minderTime"] = 5,

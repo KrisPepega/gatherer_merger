@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "lua-json": "^1.0.1"
+    "lodash-es": "^4.17.21"
   }
 }

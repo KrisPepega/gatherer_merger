@@ -9,7 +9,7 @@
     
     <input type="file" id="file1" accept=".lua">
     <input type="file" id="file2" accept=".lua">
-    <button onclick="uploadFiles()">Upload Files</button>
+    <button id="upload-files">Upload Files</button>
 
     <div class="grid_container">
         <div id="result1">
@@ -28,35 +28,6 @@
         </div>
     </div>
     
-    <script>
-        import '/imports.js'
-        let file1content = ''
-        let file2content = ''
-        let output = ''
-
-        function uploadFiles() {
-            const file1 = document.getElementById("file1").files[0]
-            const file2 = document.getElementById("file2").files[0]
-        
-            if (!file1 || !file2) {
-                alert("Please select both files.")
-                return
-            }
-        
-            file1.text().then((PromiseResult) => {
-                file1content = PromiseResult
-                document.getElementById("file1Content").textContent = file1content
-                file2.text().then((PromiseResult) => {
-                    file2content = PromiseResult
-                    document.getElementById("file2Content").textContent = file2content
-                    merge()
-                })
-            })
-        }
-
-    function merge() {
-        console.log(parse(file1content))
-    }
-    </script>
+    <script type="module" src="./scripts.js"></script>
 </body>
 </html>
