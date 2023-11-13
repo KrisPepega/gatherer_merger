@@ -6,28 +6,30 @@
 </head>
 <body>
     <h1>Gatherer merger</h1>
-    
-    <input type="file" id="file1" accept=".lua">
-    <input type="file" id="file2" accept=".lua">
-    <button id="upload-files">Upload Files</button>
-
-    <div class="grid_container">
-        <div id="result1">
-            <h2>File 1 Content</h2>
-            <pre id="file1Content"></pre>
+    <div class="big_grid_container">
+        <div class="input_grid_container">
+            <input type="file" id="file1" accept=".lua">
+            <input type="file" id="file2" accept=".lua">
+            <button id="upload-files">Merge Files</button>
+            <button id="download-file">Download</button>
         </div>
-        
-        <div id="result2">
-            <h2>File 2 Content</h2>
-            <pre id="file2Content"></pre>
-        </div>
+        <div class="result_grid_container">
+            <div id="result1">
+                <h2>File 1 Content</h2>
+                <pre id="file1Content"></pre>
+            </div>
+            
+            <div id="result2">
+                <h2>File 2 Content</h2>
+                <pre id="file2Content"></pre>
+            </div>
 
-        <div id="result3">
-            <h2>Output Content</h2>
-            <pre id="outputContent"></pre>
+            <div id="result3">
+                <h2>Output Content</h2>
+                <pre id="outputContent"></pre>
+            </div>
         </div>
     </div>
-    
     <script type="module" src="./scripts.js"></script>
 </body>
 </html>
