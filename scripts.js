@@ -1,6 +1,7 @@
 import merge from "./node_modules/lodash-es/merge.js"
+let output_content;
 
-function uploadFiles() {
+function upload_files() {
     const file1 = document.getElementById("file1").files[0]
     const file2 = document.getElementById("file2").files[0]
 
@@ -15,7 +16,8 @@ function uploadFiles() {
         file2.text().then((PromiseResult) => {
             let file_2_content = PromiseResult
             document.getElementById("file2Content").textContent = file_2_content
-            document.getElementById("outputContent").innerText = JSON.stringify(merger(file_1_content, file_2_content), null, 4)
+            output_content = merger(file_1_content, file_2_content)
+            document.getElementById("outputContent").innerText = output_content
         })
     })
 }
@@ -35,19 +37,19 @@ function lua_to_json(input) {
         .replace(/\s--\s\[\d+\](\n)/g, '$1')                                        // remove comment
         .replace(/\,(\n\t*\})/g, '$1')                                              // remove trailing comma
         .replace(/\[(.*?)\]\s\=\s/g,'$1:')                                          // change equal to colon, remove brackets
-        .replace(/[\t\r\n]/g,'')                                                    // remove tabs & returns
+        //.replace(/[\t\r\n]/g,'')                                                    // remove tabs & returns
         .replace(/(".)=(.{)/g, '$1:$2')                                             // catch remaining equals and replace with colon    
-        .replace(/,(})/g, '$1');                                                    // remove remaining trailing commas
+        .replace(/,(\s*})/g, '$1');                                                    // remove remaining trailing commas
+    //console.log(str)
     let json = JSON.parse(str)
-    //console.log(JSON.stringify(json,null,4))
     return json
 }
 
 function json_to_lua(input) {
     let str = input
-    console.log(str)
+    //console.log(str)
     str = str
-        .replace(/("([0-9]*)"|("[a-z-\s]*"))\s*:/g, '[$2$3]=')
+        .replace(/("([0-9]*)"|("[a-z-\s]*"))\s*:/g, '[$2$3] =')
     return str
 }
 
@@ -55,8 +57,27 @@ function merger(master, mergee) {
     let lua1 = master
     let lua2 = mergee
     let acc_settings = lua1.replace(/[\s\S]*(?=(Gatherer_SavedSettings_AccountWide))/,'')
-    let temp = json_to_lua(JSON.stringify(merge(lua_to_json(lua1), lua_to_json(lua2))))
-    return temp + acc_settings.replace(/[\t\r\n]/g,'')
+    let temp = json_to_lua(JSON.stringify(merge(lua_to_json(lua1), lua_to_json(lua2)), null, 4))
+    //output_file = new File([output], "Gatherer.lua",{type: "text/plain"})
+    return "GatherItems = " + temp + "\n" + acc_settings
 }
 
-document.getElementById("upload-files").addEventListener("click", () => {uploadFiles(), false})
+function download_file(filename){
+    if(!output_content){
+        alert("No files merged")
+        return
+    }
+    
+    let element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(output_content));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+    
+}
+
+document.getElementById("download-file").addEventListener("click", () => (download_file("Gatherer.lua"), false))
+document.getElementById("upload-files").addEventListener("click", () => {upload_files(), false})
