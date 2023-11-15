@@ -49,7 +49,7 @@ function json_to_lua(input) {
     let str = input
     //console.log(str)
     str = str
-        .replace(/("([0-9]*)"|("[a-z-\s]*"))\s*:/g, '[$2$3] =')
+        .replace(/("([0-9]*)"|("[a-z-\s-']*"))\s*:/g, '[$2$3] =')
     return str
 }
 
